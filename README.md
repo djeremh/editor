@@ -23,7 +23,7 @@ var editor = new Editor();
 editor.render();
 ```
 
-The editor will take the position of the first `<textarea>` element. 
+The editor will take the position of the first `<textarea>` element.
 
 ### Get the content
 
@@ -74,13 +74,21 @@ The `Editor` Class accepts an option as the parameter. The supported options are
 
   The element of the textarea. The default value is the first `<textarea>`.
 
-* tools (array or false)
+* toolbar (array or false)
 
-  If set false, the editor will have no toolbar.
+  If set false, the editor will have no toolbar. If not set, a default toolbar will be appended.
+
+* toolbarEl (String or false)
+
+  If set, the script will load the toolbar in the existing html element
 
 * status (array or false)
 
-  If set false, the editor will have no statusbar.
+  If set false, the editor will have no statusbar. If not set, a default statusbar will be appended.
+
+* statusbarEl (String or false)
+
+  If set, the script will load the statusbar in the existing html element
 
 * actions (object)
 
@@ -91,7 +99,7 @@ Example:
 ```JavaScript
 new Editor({
   element: '#editor',
-  tools: false
+  toolbar: false
 })
 ```
 

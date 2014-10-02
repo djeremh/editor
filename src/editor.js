@@ -100,24 +100,38 @@ Editor.prototype.render = function(el) {
   });
 
   if (options.toolbar !== false) {
-    this.createToolbar();
+    if (options.toolbarEl && options.toolbarEl.length) {
+      this.createToolbar(options.toolbarEl);
+    } else {
+      this.createToolbar();
+    }
   }
   if (options.status !== false) {
-    this.createStatusbar();
+    if (options.statusbarEl && options.statusbarEl.length) {
+      this.createStatusbar(options.statusbarEl);
+    } else {
+      this.createStatusbar();
+    }
   }
 
   this._rendered = this.element;
 };
 
-Editor.prototype.createToolbar = function(items) {
+Editor.prototype.createToolbar = function(elem, items) {
   items = items || this.options.toolbar;
 
   if (!items || items.length === 0) {
     return;
   }
 
-  var bar = document.createElement('div');
-  bar.className = 'editor-toolbar';
+  var bar;
+
+  if (elem && elem.length) {
+    bar = document.querySelector(elem);
+  } else {
+    bar = document.createElement('div');
+    bar.className = 'editor-toolbar';
+  }
 
   var self = this;
 
@@ -168,17 +182,25 @@ Editor.prototype.createToolbar = function(items) {
   });
 
   var cmWrapper = cm.getWrapperElement();
-  cmWrapper.parentNode.insertBefore(bar, cmWrapper);
+  if (!elem || !elem.length) {
+    cmWrapper.parentNode.insertBefore(bar, cmWrapper);
+  }
   return bar;
 };
 
-Editor.prototype.createStatusbar = function(status) {
+Editor.prototype.createStatusbar = function(elem, status) {
   status = status || this.options.status;
 
   if (!status || status.length === 0) return;
 
-  var bar = document.createElement('div');
-  bar.className = 'editor-statusbar';
+  var bar;
+
+  if (elem && elem.length) {
+    bar = document.querySelector(elem);
+  } else {
+    bar = document.createElement('div');
+    bar.className = 'editor-statusbar';
+  }
 
   var pos, cm = this.codemirror;
   for (var i = 0; i < status.length; i++) {
@@ -206,7 +228,9 @@ Editor.prototype.createStatusbar = function(status) {
     })(status[i]);
   }
   var cmWrapper = this.codemirror.getWrapperElement();
-  cmWrapper.parentNode.insertBefore(bar, cmWrapper.nextSibling);
+  if (!elem || !elem.length) {
+    cmWrapper.parentNode.insertBefore(bar, cmWrapper.nextSibling);
+  }
   return bar;
 };
 
